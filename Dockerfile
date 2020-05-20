@@ -103,11 +103,21 @@ RUN set -x \
     /var/tmp/* \
     /var/cache/apk/*
 
-COPY --from=library/nginx:alpine /etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=library/nginx:alpine /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+# runtime-deps
+RUN apk add --no-cache bash
+
+COPY bin/inject-env-vars.sh /
+COPY bin/run.sh /
+COPY config/nginx.conf /
+
+RUN chmod +x /inject-env-vars.sh
+RUN chmod +x /run.sh
 
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
-CMD ["nginx", "-g", "daemon off;"]
+ENV LDAP_URL "ldap://capetown.gov.za:3268/dc=capetown,dc=gov,dc=za?sAMAccountName?sub?(objectClass=person)"
+ENV BACKEND_SERVER "nginx-s3-proxy:8000"
+
+CMD ["/bin/bash", "/run.sh"]
