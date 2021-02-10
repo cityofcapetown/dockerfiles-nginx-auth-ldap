@@ -16,6 +16,8 @@ By default, this image rolls it's own config, and uses the following env variabl
 * `LDAP_WELCOME_MSG` - Message shown when prompting users for their username and password, e.g. `"Hello, welcome to my app - please use your special credentials"`
 * `LDAP_URL` - LDAP URL to bind, and search against. Defaults to `ldap://capetown.gov.za:3268/dc=capetown,dc=gov,dc=za?sAMAccountName?sub?(objectClass=person)` which is all users at the City of Cape Town, e.g. `ldap://capetown.gov.za:3268/dc=capetown,dc=gov,dc=za?sAMAccountName?sub?(&(memberOf:1.2.840.113556.1.4.1941:=CN=My%20Group,OU=Resource%20Groups,OU=Groups,DC=capetown,DC=gov,DC=za)(objectClass=person))`
 * `BACKEND_SERVER` - backend server (without protocol) to pass the authenticated user to, e.g. `my-service.capetown.gov.za`.
+* `BACKEND_SCHEME` - protocol to use with the backend server e.g. `https` (defaults to `http`).
+* `BACKEND_AUTH_HEADER` - optional base64 encoded basic auth string, e.g. `<username>:<password>` -> `PHVzZXJuYW1lPjo8cGFzc3dvcmQ+`.
 
 To limit access to a specific group, add it to the `LDAP_URL` (see the example above).
 
